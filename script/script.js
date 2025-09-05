@@ -27,14 +27,40 @@ const loadWordDetail = async(id) => {
   const url = `https://openapi.programming-hero.com/api/word/${id}`;
  const res = await fetch(url);
  const details = await res.json();
- displayWordDetail(details)
+ displayWordDetail(details.data)
 }
 
 
+function pronounceWord(word) {
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = "en-EN"; // English
+  window.speechSynthesis.speak(utterance);
+ 
+}
+
 const displayWordDetail = (word) => {
+  
  const btnparent = document.getElementById("modal-container")
- btnparent.innerHTML = ` <h1>Press ESC key or click the button below to close </h1>
- `
+ btnparent.innerHTML = `
+       <h1 class="text-3xl font-bold">
+       ${word.word} (<i class="fa-solid fa-microphone-lines"></i>  :${word.pronunciation}) </h1>   
+        <div class="my-3">
+        <h3 class="font-bold">Meaning</h3>
+        <h3 class=" ">${word.meaning}</h3>
+      </div>
+       <div class="my-3">
+         <h3 class="font-bold">Example</h3>
+        <p>${word.sentence}</p>
+       </div>
+       
+       <div class="my-3">
+         <h3>সমার্থক শব্দ গুলো</h3>
+        <button class="btn btn-soft btn-primary">${word.synonyms[0]}</button>
+        <button class="btn btn-soft btn-primary">${word.synonyms[1]}</button>
+        <button class="btn btn-soft btn-primary">${word.synonyms[2]}</button></div>
+        <button class="btn btn-primary my-3">Complete Learning</button>
+      </div> `
+ 
 document.getElementById("my_modal_5").showModal()
 
   
@@ -62,7 +88,8 @@ const lessonWordDisplay = (words) => {
 
      <div class="flex mt-10 h-[50px] text-3xl justify-between items-center">
     <button id="info" onclick="loadWordDetail(${word.id})" class="cursor-pointer bg-[#E8F4FF] p-2 rounded-lg"><i class="fa-solid fa-circle-info"></i></button>
-    <button class="cursor-pointer bg-[#E8F4FF] p-2 rounded-lg"><i class="fa-brands fa-soundcloud"></i> </button>  
+
+    <button onclick="pronounceWord('${word.word}')" id="speak" class="cursor-pointer bg-[#E8F4FF] p-2 rounded-lg"><i class="fa-brands fa-soundcloud"></i> </button>  
     </div>
      </div>
     </div>
@@ -85,3 +112,18 @@ lessonContainer.appendChild(btnDiv);
 }
 };
 loadLessons() 
+
+document.getElementById("search").addEventListener("click", ()=>{
+
+const input = document.getElementById("search-input")
+const searchValue = input.value.trim().toLowerCase();
+fetch("https://openapi.programming-hero.com/api/words/all")
+.then(res => res.json())
+.then((data) => {
+  const allWords = data.data;
+  const filterWords = allWords.filter((word) => word.word.toLowerCase().includes(searchValue)
+);
+  lessonWordDisplay(filterWords);
+})
+
+})

@@ -94,7 +94,22 @@
 </div>
 </section>
 
+ <section class="mt-7 mx-auto flex justify-center items-center">
+  <div class="join">
+  <div>
+    <div>
+      <input id="search-input" class="input join-item" placeholder="Search" />
+    </div>
+  </div>
+
+  <div class="indicator">
+    <span class="indicator-item badge badge-secondary">new</span>
+    <button id="search" class="btn join-item">Search</button>
+  </div>
+</div> 
+ </section>
 <section id="card-container" class="bg-[#F8F8F8] w-11/12 mx-auto mt-16 grid grid-cols-1 md:grid-cols-3 items-center justify-center">
+
 
 <div class="text-center col-span-3 p-22">
 <p class="text-3xl">একটি Lesson Select করুন।</p>
@@ -105,16 +120,14 @@
 </section>
 
 <section>
-  <!-- Open the modal using ID.showModal() method -->
-<!-- <button class="btn" onclick="my_modal_5.showModal()">open modal</button> -->
+
 <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
   
-
   <div class="modal-box">
+    <div id="modal-container" class="mx-auto mt-10"></div>
     <div class="modal-action">
-      <div id="modal-container"></div>
       <form method="dialog">
-        <!-- if there is a button in form, it will close the modal -->
+  
         <button class="btn">Close</button>
       </form>
     </div>
